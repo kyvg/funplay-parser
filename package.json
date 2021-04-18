@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "repository": "https://github.com/kyvg/funplay-parser.git",
+  "repository": "https://github.com/kyvg/items-parser.git",
   "scripts": {
     "start": "ts-node ./index.ts"
   },
