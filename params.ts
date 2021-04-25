@@ -7,5 +7,5 @@ export interface ParsedItem {
   rec: number;
 }
 
-export const chats: number[] = [];
-export const last: ParsedItem[]  = [];
+export const chats: Set<number> = new Set();
+export const last: ParsedItem[] = [];

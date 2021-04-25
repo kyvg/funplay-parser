@@ -55,7 +55,7 @@ async function parsePage() {
       diff(parsedItem);
       return parsedItem;
     });
-    last.splice(0, -1, ...parsedItems)
+    last.splice(0, last.length, ...parsedItems)
   } catch(e) {
     console.log(e);
   }

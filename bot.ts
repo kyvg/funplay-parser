@@ -9,17 +9,16 @@ if (!token) {
 export const bot = new Telegraf(token ?? '');
 
 bot.command('start', (ctx) => {
-  chats.push(ctx.chat.id);
+  chats.add(ctx.chat.id);
   ctx.reply('chat id saved');
 });
 
 bot.command('stop', (ctx) => {
-  const index = chats.indexOf(ctx.chat.id);
-  if (index !== -1) {
-    chats.splice(index, 1);
+  const deleted = chats.delete(ctx.chat.id);
+  if (deleted) {
     ctx.reply('chat id deleted');
   } else {
-    ctx.reply('chan not found');
+    ctx.reply('chat not found');
   }
 });
 
