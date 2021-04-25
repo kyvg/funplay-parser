@@ -92,10 +92,10 @@ function diff(seller: ParsedItem) {
   if (s) {
     // смотрим менялась ли цена или бьем продажи
     if (s.gold !== seller.gold) {
-      sendToAll(`*${seller.name}*: 💰${s.gold} -> ${seller.gold} \\[ ${compare(s.gold,seller.gold)}/${seller.server}\]\(${seller.rec}\)`);
+      sendToAll(`*${seller.name}*: 💰${s.gold} => ${seller.gold} \\[ ${compare(s.gold,seller.gold)}/${seller.server}\]\(${seller.rec}\)`);
     }
     if (s.price !== seller.price) {
-      sendToAll(`*${seller.name}*: '📈'${s.price} -> ${seller.price}`)
+      sendToAll(`*${seller.name}*: '📈'${s.price} => ${seller.price}`)
     }
   }
 }
