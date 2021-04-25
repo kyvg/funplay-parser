@@ -28,7 +28,7 @@ bot.command('list', (ctx) => {
       return `\`*Name*: ${i.name} Item: ${i.itemName} Gold: ${i.gold} Price: ${i.price} Server: ${i.server}\``;
     });
     if (resp.length) {
-      ctx.reply(resp.join('\n\n'), { 'parse_mode': 'MarkdownV2' });
+      ctx.reply(resp.join('\n\n'), { 'parse_mode': 'Markdown' });
     } else {
       ctx.reply('list is empty')
     }
@@ -41,6 +41,6 @@ bot.launch();
 
 export const sendToAll = (msg: string): void => {
   chats.forEach((id) => {
-    bot.telegram.sendMessage(id, msg, { 'parse_mode': 'MarkdownV2' });
+    bot.telegram.sendMessage(id, msg, { 'parse_mode': 'Markdown' });
   });
 }
