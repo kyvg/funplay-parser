@@ -79,7 +79,11 @@ async function parsePage() {
 main();
 
 function compare(a: number, b: number) {
-  if (a > b) return `⬇ ${a - b}`
+  if (a > b) {
+    return `⬇ ${a - b}`;
+  } else {
+    return `↗ ${b - a}`
+  }
 }
 
 function diff(seller: ParsedItem) {
@@ -92,10 +96,10 @@ function diff(seller: ParsedItem) {
   if (s) {
     // смотрим менялась ли цена или бьем продажи
     if (s.gold !== seller.gold) {
-      sendToAll(`*${seller.name}*: 💰${s.gold} => ${seller.gold} \\[ ${compare(s.gold,seller.gold)}/${seller.server}\]\(${seller.rec}\)`);
+      sendToAll(`*${seller.name}*: 💰${s.gold} => ${seller.gold} \\[ ${compare(s.gold,seller.gold)}/${seller.server}\] ${seller.itemName} \(${seller.rec}\)`);
     }
     if (s.price !== seller.price) {
-      sendToAll(`*${seller.name}*: '📈'${s.price} => ${seller.price}`)
+      sendToAll(`*${seller.name}*: 📈${s.price} => ${seller.price} ${seller.itemName}`)
     }
   }
 }
