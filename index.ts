@@ -5,15 +5,16 @@ import { parse } from 'node-html-parser';
 import fetch from 'node-fetch';
 import { sendToAll } from './bot';
 import { last, ParsedItem } from './params';
-
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 const url = process.env.WEB_PAGE;
+const proxyAgent = new HttpsProxyAgent(process.env.PROXY)
 
 if (!url) {
   throw new TypeError('process.env.WEB_PAGE is undefined')
 }
 
-const retryTime = 21230 // дефолтный таймаут между вызовом страницы страниц
+const retryTime = () => 25000 + Math.random() * 10000; // дефолтный таймаут между вызовом страницы страниц
 
 const delay = async (ms: number) => await new Promise(resolve => setTimeout(resolve, ms));
 
@@ -27,7 +28,7 @@ const parseNumber = (content: string) => {
 
 async function parsePage() {
   try {
-    const page = await fetch(url ?? '')
+    const page = await fetch(url ?? '',{agent: proxyAgent})
       .then((resp) => resp.text())
       .catch((e) => { console.log(e) });
 
@@ -69,7 +70,7 @@ async function parsePage() {
   while (true) {
     try {
       await parsePage()
-      await delay(retryTime)
+      await delay(retryTime())
     } catch (e) {
       console.error(e)
     }

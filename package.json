@@ -12,6 +12,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "node-fetch": "^2.6.1",
+    "https-proxy-agent": "^5.0.0",
     "node-html-parser": "^3.1.5",
     "telegraf": "^4.3.0",
     "ts-node": "^9.1.1",
