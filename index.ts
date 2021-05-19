@@ -14,7 +14,7 @@ if (!url) {
   throw new TypeError('process.env.WEB_PAGE is undefined')
 }
 
-const retryTime = 32230 // дефолтный таймаут между вызовом страницы страниц
+const retryTime = () => 25000 + Math.random() * 10000; // дефолтный таймаут между вызовом страницы страниц
 
 const delay = async (ms: number) => await new Promise(resolve => setTimeout(resolve, ms));
 
@@ -70,7 +70,7 @@ async function parsePage() {
   while (true) {
     try {
       await parsePage()
-      await delay(retryTime)
+      await delay(retryTime())
     } catch (e) {
       console.error(e)
     }
