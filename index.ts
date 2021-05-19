@@ -4,15 +4,22 @@ config();
 import { parse } from 'node-html-parser';
 import fetch from 'node-fetch';
 import { sendToAll } from './bot';
-import { last, ParsedItem } from './params';
+import { last, PageType, pageTypes, ParsedItem } from './params';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 
-const url = process.env.WEB_PAGE;
-const proxyAgent = new HttpsProxyAgent(process.env.PROXY)
-
-if (!url) {
+if (!process.env.PROXY) {
+  throw new TypeError('process.env.PROXY is undefined')
+}
+if (!process.env.WEB_PAGE) {
   throw new TypeError('process.env.WEB_PAGE is undefined')
 }
+if (!process.env.PAGE_TYPE || !pageTypes.includes(process.env.PAGE_TYPE as PageType)) {
+  throw new TypeError('invalid process.env.PAGE_TYPE')
+}
+
+const url = process.env.WEB_PAGE;
+const proxyAgent = new HttpsProxyAgent(process.env.PROXY);
+const pageType = process.env.PAGE_TYPE;
 
 const retryTime = () => 25000 + Math.random() * 10000; // дефолтный таймаут между вызовом страницы страниц
 
@@ -44,9 +51,14 @@ async function parsePage() {
       const gold = item.querySelector('div.tc-amount').textContent;
       const price = item.querySelector('div.tc-price').textContent;
       const rec = item.querySelector('div.media-user-reviews').textContent;
+      let itemName;
+      if (pageType === 'lots') {
+        itemName = item.querySelector('div.tc-desc-text').textContent;
+      }
       const parsedItem = {
         server,
         name,
+        itemName,
         gold: parseNumber(gold),
         price: parseNumber(price),
         rec: parseNumber(rec),
@@ -94,10 +106,10 @@ function diff(seller: ParsedItem) {
   if (s) {
     // смотрим менялась ли цена или бьем продажи
     if (s.gold !== seller.gold) {
-      sendToAll(`*${seller.name}*: 💰${s.gold} => ${seller.gold} \\[ ${compare(s.gold,seller.gold)}/${seller.server}\] \(${seller.rec}\)`);
+      sendToAll(`*${seller.name}*: 💰${s.gold} => ${seller.gold} \\[ ${compare(s.gold,seller.gold)}/${seller.server}\] ${seller.itemName ?? ''} \(${seller.rec}\)`);
     }
     if (s.price !== seller.price) {
-      sendToAll(`*${seller.name}*: 📈${s.price} => ${seller.price}`)
+      sendToAll(`*${seller.name}*: 📈${s.price} => ${seller.price} ${seller.itemName ?? ''}`)
     }
   }
 }
