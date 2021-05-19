@@ -44,11 +44,9 @@ async function parsePage() {
       const gold = item.querySelector('div.tc-amount').textContent;
       const price = item.querySelector('div.tc-price').textContent;
       const rec = item.querySelector('div.media-user-reviews').textContent;
-      const itemName = item.querySelector('div.tc-desc-text').textContent;
       const parsedItem = {
         server,
         name,
-        itemName,
         gold: parseNumber(gold),
         price: parseNumber(price),
         rec: parseNumber(rec),
@@ -90,17 +88,16 @@ function compare(a: number, b: number) {
 function diff(seller: ParsedItem) {
   let s = last.find((item) => {
     return item.name === seller.name
-      && item.server === seller.server
-      && item.itemName === seller.itemName;
+      && item.server === seller.server;
   });
   // продовец найден в старой выгрузке
   if (s) {
     // смотрим менялась ли цена или бьем продажи
     if (s.gold !== seller.gold) {
-      sendToAll(`*${seller.name}*: 💰${s.gold} => ${seller.gold} \\[ ${compare(s.gold,seller.gold)}/${seller.server}\] ${seller.itemName} \(${seller.rec}\)`);
+      sendToAll(`*${seller.name}*: 💰${s.gold} => ${seller.gold} \\[ ${compare(s.gold,seller.gold)}/${seller.server}\] \(${seller.rec}\)`);
     }
     if (s.price !== seller.price) {
-      sendToAll(`*${seller.name}*: 📈${s.price} => ${seller.price} ${seller.itemName}`)
+      sendToAll(`*${seller.name}*: 📈${s.price} => ${seller.price}`)
     }
   }
 }

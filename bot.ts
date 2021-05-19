@@ -25,7 +25,7 @@ bot.command('stop', (ctx) => {
 bot.command('list', (ctx) => {
   try {
     const resp = last.map((i) => {
-      return `\`*Name*: ${i.name} Item: ${i.itemName} Gold: ${i.gold} Price: ${i.price} Server: ${i.server}\``;
+      return `\`*Name*: ${i.name} Gold: ${i.gold} Price: ${i.price} Server: ${i.server}\``;
     });
     if (resp.length) {
       ctx.reply(resp.join('\n\n'), { 'parse_mode': 'Markdown' });
