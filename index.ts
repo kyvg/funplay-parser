@@ -26,7 +26,7 @@ const retryTime = () => 25000 + Math.random() * 10000; // дефолтный т�
 const delay = async (ms: number) => await new Promise(resolve => setTimeout(resolve, ms));
 
 const parseNumber = (content: string) => {
-  const number = parseFloat(content.replaceAll(' ', ''));
+  const number = parseFloat(content.replace(/\s+/gm, ''));
   if (Number.isNaN(number)) {
     return 0;
   }
