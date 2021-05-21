@@ -98,10 +98,19 @@ function compare(a: number, b: number) {
 }
 
 function diff(seller: ParsedItem) {
-  let s = last.find((item) => {
-    return item.name === seller.name
-      && item.server === seller.server;
-  });
+  let s;
+  if (pageType === 'lots') {
+    s = last.find((item) => {
+      return item.name === seller.name
+        && item.server === seller.server
+        && item.itemName === seller.itemName;
+    });
+  } else {
+    s = last.find((item) => {
+      return item.name === seller.name
+        && item.server === seller.server;
+    });
+  }
   // продовец найден в старой выгрузке
   if (s) {
     // смотрим менялась ли цена или бьем продажи
