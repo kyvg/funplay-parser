@@ -58,7 +58,7 @@ async function parsePage() {
       const parsedItem = {
         server,
         name: name.trim(),
-        itemName: itemName.trim(),
+        itemName,
         gold: parseNumber(gold),
         price: parseNumber(price),
         rec: parseNumber(rec),
