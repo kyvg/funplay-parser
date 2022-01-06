@@ -1,6 +1,8 @@
 import { Telegraf } from 'telegraf';
 import { chats, last } from './params';
 
+const ROWS_PER_MESSAGE = 50;
+
 const token = process.env.BOT_TOKEN;
 if (!token) {
   throw new TypeError('process.env.BOT_TOKEN is undefined')
@@ -22,16 +24,17 @@ bot.command('stop', (ctx) => {
   }
 });
 
-bot.command('list', (ctx) => {
+bot.command('list', async (ctx) => {
   try {
-    const resp = last.map((i) => {
+    const messages = last.map((i) => {
       const item = i.itemName ? ` Item: ${i.itemName}` : '';
       return `\`*Name*: ${i.name}${item} Gold: ${i.gold} Price: ${i.price} Server: ${i.server}\``;
     });
-    if (resp.length) {
-      ctx.reply(resp.join('\n\n'), { 'parse_mode': 'Markdown' });
-    } else {
-      ctx.reply('list is empty')
+    if (!messages.length) {
+      await ctx.reply('list is empty');
+    }
+    while (messages.length) {
+      await ctx.reply(messages.splice(0, ROWS_PER_MESSAGE).join('\n\n'), { parse_mode: 'Markdown' });
     }
   } catch (e) {
     console.log(e);
@@ -42,6 +45,6 @@ bot.launch();
 
 export const sendToAll = (msg: string): void => {
   chats.forEach((id) => {
-    bot.telegram.sendMessage(id, msg, { 'parse_mode': 'Markdown' });
+    bot.telegram.sendMessage(id, msg, { parse_mode: 'Markdown' });
   });
 }
